@@ -70,8 +70,12 @@ def _get_decoder(data_type: str, interpretation: str, include_tz: bool = False):
 
 def _decode_datetime(value: str, include_tz: bool) -> datetime:
     # Correct `0000-00-00 00:00:00` to `0000-00-00T00:00:00`
+<<<<<<< HEAD
     # or include .000 or .000000
     if re.match(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.(\d{3}|\d{6}))?$', value):
+=======
+    if value[10] == ' ':
+>>>>>>> 382e0f3 (use dateutil parser for datetime parsing (#57))
         value = '%sT%s' % (value[0:10], value[11:])
     # If not 3 (milli sec) or 6 digits (micro sec) after ".", strip them
     elif re.match(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+$', value):
