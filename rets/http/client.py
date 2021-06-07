@@ -31,12 +31,14 @@ class RetsHttpClient:
                  cookie_dict: dict = None,
                  use_get_method: bool = False,
                  timeout: int = None,
+                 send_rets_ua_authorization: bool = True,
                  ):
         self._user_agent = user_agent
         self._user_agent_password = user_agent_password
         self._rets_version = rets_version
         self._use_get_method = use_get_method
         self._timeout = timeout
+        self._send_rets_ua_authorization = send_rets_ua_authorization
 
         splits = urlsplit(login_url)
         self._base_url = urlunsplit((splits.scheme, splits.netloc, '', '', ''))
@@ -299,8 +301,9 @@ class RetsHttpClient:
             **(headers or {}),
             'User-Agent': self.user_agent,
             'RETS-Version': self.rets_version,
-            'RETS-UA-Authorization': self._rets_ua_authorization()
         }
+        if self._send_rets_ua_authorization:
+            request_headers['RETS-UA-Authorization'] = self._rets_ua_authorization()
 
         if self._use_get_method:
             if payload:
