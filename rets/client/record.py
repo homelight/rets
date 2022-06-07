@@ -8,8 +8,12 @@ class Record:
     def __init__(self, resource_class, data: dict):
         self.resource = resource_class.resource
         self.resource_class = resource_class
-        self.resource_key = str(data[resource_class.resource.key_field])
         self.data = data
+        
+        try:
+            self.resource_key = str(data[resource_class.resource.key_field])
+        except KeyError:
+            self.resource_key = None
 
     def get_objects(self, name: str, **kwargs) -> Sequence[Object]:
         resource_object = self.resource.get_object_type(name)
