@@ -32,6 +32,7 @@ class RetsHttpClient:
                  use_get_method: bool = False,
                  timeout: int = None,
                  send_rets_ua_authorization: bool = True,
+                 timeout: int = None,
                  ):
         self._user_agent = user_agent
         self._user_agent_password = user_agent_password
@@ -39,6 +40,7 @@ class RetsHttpClient:
         self._use_get_method = use_get_method
         self._timeout = timeout
         self._send_rets_ua_authorization = send_rets_ua_authorization
+        self._timeout = timeout
 
         splits = urlsplit(login_url)
         self._base_url = urlunsplit((splits.scheme, splits.netloc, '', '', ''))
