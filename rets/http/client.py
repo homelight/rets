@@ -30,11 +30,13 @@ class RetsHttpClient:
                  capability_urls: str = None,
                  cookie_dict: dict = None,
                  use_get_method: bool = False,
+                 timeout: int = None,
                  ):
         self._user_agent = user_agent
         self._user_agent_password = user_agent_password
         self._rets_version = rets_version
         self._use_get_method = use_get_method
+        self._timeout = timeout
 
         splits = urlsplit(login_url)
         self._base_url = urlunsplit((splits.scheme, splits.netloc, '', '', ''))
@@ -307,7 +309,7 @@ class RetsHttpClient:
                 url, 
                 auth=self._http_auth, 
                 headers=request_headers, 
-                timeout=10,
+                timeout=self._timeout,
             )
         else:
             response = self._session.post(
@@ -315,7 +317,7 @@ class RetsHttpClient:
                 auth=self._http_auth, 
                 headers=request_headers, 
                 data=payload, 
-                timeout=10,
+                timeout=self._timeout,
             )
 
         response.raise_for_status()
