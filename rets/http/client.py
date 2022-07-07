@@ -30,11 +30,13 @@ class RetsHttpClient:
                  capability_urls: str = None,
                  cookie_dict: dict = None,
                  use_get_method: bool = False,
+                 timeout: int = None,
                  ):
         self._user_agent = user_agent
         self._user_agent_password = user_agent_password
         self._rets_version = rets_version
         self._use_get_method = use_get_method
+        self._timeout = timeout
 
         splits = urlsplit(login_url)
         self._base_url = urlunsplit((splits.scheme, splits.netloc, '', '', ''))
@@ -303,9 +305,20 @@ class RetsHttpClient:
         if self._use_get_method:
             if payload:
                 url = '%s?%s' % (url, urlencode(payload))
-            response = self._session.get(url, auth=self._http_auth, headers=request_headers)
+            response = self._session.get(
+                url, 
+                auth=self._http_auth, 
+                headers=request_headers, 
+                timeout=self._timeout,
+            )
         else:
-            response = self._session.post(url, auth=self._http_auth, headers=request_headers, data=payload)
+            response = self._session.post(
+                url, 
+                auth=self._http_auth, 
+                headers=request_headers, 
+                data=payload, 
+                timeout=self._timeout,
+            )
 
         response.raise_for_status()
         self._rets_session_id = self._session.cookies.get('RETS-Session-ID', '')
