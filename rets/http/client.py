@@ -303,9 +303,20 @@ class RetsHttpClient:
         if self._use_get_method:
             if payload:
                 url = '%s?%s' % (url, urlencode(payload))
-            response = self._session.get(url, auth=self._http_auth, headers=request_headers)
+            response = self._session.get(
+                url, 
+                auth=self._http_auth, 
+                headers=request_headers, 
+                timeout=10,
+            )
         else:
-            response = self._session.post(url, auth=self._http_auth, headers=request_headers, data=payload)
+            response = self._session.post(
+                url, 
+                auth=self._http_auth, 
+                headers=request_headers, 
+                data=payload, 
+                timeout=10,
+            )
 
         response.raise_for_status()
         self._rets_session_id = self._session.cookies.get('RETS-Session-ID', '')
