@@ -61,7 +61,11 @@ def _parse_multipart(response: ResponseLike) -> Sequence[Object]:
     --simple boundary--
     """
     encoding = response.encoding or DEFAULT_ENCODING
-    multipart = MultipartDecoder.from_response(response, encoding)
+    try:
+        multipart = MultipartDecoder.from_response(response, encoding)
+    except UnicodeDecodeError:
+        encoding = DEFAULT_ENCODING
+        multipart = MultipartDecoder.from_response(response, encoding)
     # We need to decode the headers because MultipartDecoder returns bytes keys and values,
     # while requests.Response.headers uses str keys and values.
     for part in multipart.parts:
