@@ -30,7 +30,6 @@ class RetsHttpClient:
                  capability_urls: str = None,
                  cookie_dict: dict = None,
                  use_get_method: bool = False,
-                 timeout: int = None,
                  send_rets_ua_authorization: bool = True,
                  timeout: int = None,
                  ):
